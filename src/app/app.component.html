@@ -1,1 +1,10 @@
+<ng-container *ngIf="user; else notUser">
+  <h1 class="text-center">My TODO list </h1> <span class="text-danger pull-right pointer" (click)="logout()"><i class="bi bi-x-octagon"> Logout</i></span>
+  <hr />
+</ng-container>
+<ng-template #notUser>
+  <h1 class="text-center">Welcome!</h1>
+  <hr
+/></ng-template>
+
 <router-outlet></router-outlet>

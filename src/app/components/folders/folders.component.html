@@ -1,0 +1,49 @@
+<div class="card">
+  <div class="card-body">
+    <ul class="list-unstyled">
+      <li *ngFor="let folder of user.Folders">
+        <div class="input-group mb-3 w100">
+          <div class="w-100 d-flex flex-row justify-content-between">
+            <i class="bi bi-archive w-25">{{ folder.name }}</i>
+            <i class="bi bi-eye pointer w-25" (click)="userWantsToViewTasks()"
+              >View items</i
+            >
+            <i
+              class="bi bi-pencil-square pointer w-25"
+              (click)="userWantsToEditFolder(folder.id)"
+              >Edit</i
+            >
+            <i
+              class="bi bi-trash text-danger w-25"
+              (click)="userWantsToDeleteFolder(folder.id)"
+              >Delete</i
+            >
+          </div>
+        </div>
+        <hr />
+      </li>
+    </ul>
+  </div>
+  <div class="card-footer">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Folder name"
+        aria-label="Folder name"
+        aria-describedby="button-addon2"
+        (keyup.enter)="submitFolderButton.click()"
+        #createFolderInput
+      />
+      <button
+        class="btn btn-outline-success"
+        type="submit"
+        id="button-addon2"
+        (click)="userWantsToCreateFolder(createFolderInput.value)"
+        #submitFolderButton
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</div>

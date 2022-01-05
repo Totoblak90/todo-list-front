@@ -1,0 +1,9 @@
+<h3>Folders</h3>
+
+<app-folders
+  [user]="user"
+  (onEdit)="editFolder($event)"
+  (onViewMoreItems)="viewTasks($event)"
+  (onCreateFolder)="createNewFolder($event)"
+  (onDeleteFolder)="deleteFolder($event)"
+></app-folders>

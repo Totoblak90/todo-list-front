@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-header">
-    <h3 class="text-center">Login</h3>
+    <h3 class="text-center">Register</h3>
   </div>
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
     <div class="card-body">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -18,8 +18,8 @@
         </div>
         <div
           *ngIf="
-            loginForm.controls.email.errors?.required &&
-            loginForm.controls.email.touched
+            registerForm.controls.email.errors?.required &&
+            registerForm.controls.email.touched
           "
           class="form-text text-danger"
         >
@@ -27,8 +27,8 @@
         </div>
         <div
           *ngIf="
-            loginForm.controls.email.errors?.pattern &&
-            loginForm.controls.email.touched
+            registerForm.controls.email.errors?.pattern &&
+            registerForm.controls.email.touched
           "
           class="form-text text-danger"
         >
@@ -45,8 +45,8 @@
         />
         <div
           *ngIf="
-            loginForm.controls.password.errors?.required &&
-            loginForm.controls.password.touched
+            registerForm.controls.password.errors?.required &&
+            registerForm.controls.password.touched
           "
           class="form-text text-danger"
         >
@@ -73,13 +73,42 @@
           </ul>
         </div>
       </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          formControlName="passwordRepeat"
+        />
+        <div
+          *ngIf="
+            registerForm.controls.passwordRepeat.errors?.required &&
+            !registerForm.controls.passwordRepeat.pristine
+          "
+          class="form-text text-danger"
+        >
+          This field is required
+        </div>
+        <div
+          *ngIf="
+            registerForm.controls.passwordRepeat.errors?.notMatch &&
+            registerForm.controls.passwordRepeat.touched
+          "
+          class="form-text text-danger"
+        >
+          Passwords must match exactly
+        </div>
+      </div>
     </div>
     <div class="card-footer text-center">
       <button type="submit" class="btn btn-primary">Submit</button>
-      <p class="form-text mb-0"
-        >If you dont have an account just
-        <a routerLink="/register">Sign up</a></p
-      >
+      <p class="form-text mb-0">
+        Have an account?
+        <a routerLink="/login"> Sign in</a>
+      </p>
     </div>
   </form>
 </div>

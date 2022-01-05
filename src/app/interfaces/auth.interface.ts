@@ -1,4 +1,4 @@
-import { Meta, UserRes } from './general.interface';
+import { Meta, UserRegisterResponse, UserRes } from './general.interface';
 
 export interface LoginReq {
   email: string;
@@ -13,4 +13,19 @@ export interface LoginRes {
 export interface LoginResData {
   message: string;
   user: UserRes;
+}
+
+export interface RegisterReq {
+  email: string;
+  password: string;
+  passwordRepeat: string;
+}
+
+export interface RegisterRes {
+  meta: Meta;
+  data: RegisterResData;
+}
+
+export interface RegisterResData {
+  user: UserRegisterResponse;
 }

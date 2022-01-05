@@ -4,8 +4,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/User';
 import { LoginRes } from '../../interfaces/auth.interface';
-import { noConectionAlert } from '../../helpers/alerts';
+import { noConectionAlert, wrongCredentialsAlert } from '../../helpers/alerts';
 import { UserRes } from '../../interfaces/general.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent implements OnDestroy {
 
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.createForm();
   }
 
@@ -42,8 +47,15 @@ export class LoginComponent implements OnDestroy {
         .login(this.loginForm.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (res: LoginRes) => this.setLoggedUser(res?.data?.user),
-          error: (err) => noConectionAlert(),
+          next: (res: LoginRes) => {
+            res?.meta?.status === 200 || res?.meta?.status === 201
+              ? this.setLoggedUser(res?.data?.user)
+              : wrongCredentialsAlert();
+          },
+          error: (err) => {
+            console.log(err);
+            noConectionAlert();
+          },
         });
     }
   }
@@ -59,11 +71,12 @@ export class LoginComponent implements OnDestroy {
     );
 
     this.authService.setUser(u);
+    this.authService.getUser() ? this.router.navigateByUrl('/dashboard') : null;
   }
 
   private validateStrongPassword(form: FormGroup): void {
     const password = form.get('password');
-    if (password.touched) {
+    if (!password.pristine) {
       if (!/\d/.test(password.value)) {
         password.setErrors({ notDigits: true });
       } else if (!/[a-z]/.test(password.value)) {
@@ -76,6 +89,17 @@ export class LoginComponent implements OnDestroy {
         password.setErrors({ minlength: true });
       }
     }
+  }
+
+  public showStrongPasswordErrorMsgs(): boolean {
+    return (
+      this.loginForm.controls.password.touched &&
+      (this.loginForm.controls.password.errors?.notDigits ||
+        this.loginForm.controls.password.errors?.noLowercase ||
+        this.loginForm.controls.password.errors?.noUppercase ||
+        this.loginForm.controls.password.errors?.notSymbols ||
+        this.loginForm.controls.password.errors?.minlength)
+    );
   }
 
   ngOnDestroy(): void {

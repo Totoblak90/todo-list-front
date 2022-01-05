@@ -14,3 +14,5 @@ export interface UserRes {
   Folders: Folder[];
   Todos: any[];
 }
+
+export type UserRegisterResponse = Pick<UserRes, 'id' | 'email' | 'created_at' | 'updated_at'>

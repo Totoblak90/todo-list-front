@@ -7,3 +7,19 @@ export function noConectionAlert(): void {
     'error'
   );
 }
+
+export function wrongCredentialsAlert(): void {
+  Swal.fire(
+    'Error',
+    'Wrong credentials, please verify the information provided',
+    'warning'
+  )
+}
+
+export function unknownErrorAlert(): void {
+  Swal.fire(
+    'Error',
+    'We are sorry. We had an unexpected problem, please try again',
+    'error'
+  )
+}
