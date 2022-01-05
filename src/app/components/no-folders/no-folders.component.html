@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-body">
+    <p>Create your first folder and start organizing your time!</p>
+  </div>
+  <div class="card-footer">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Folder name"
+        aria-label="Folder name"
+        aria-describedby="button-addon2"
+        (keyup.enter)="submitFolderButton.click()"
+        #createFolderInput
+      />
+      <button
+        class="btn btn-outline-success"
+        type="submit"
+        id="button-addon2"
+        (click)="userWantsToCreateFolder(createFolderInput.value)"
+        #submitFolderButton
+      >
+        Create
+      </button>
+    </div>
+    <div *ngIf="showCreateFolderErrorMsg" class="form-text text-danger">
+      This field is required
+    </div>
+  </div>
+</div>

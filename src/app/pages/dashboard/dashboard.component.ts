@@ -6,7 +6,10 @@ import { FoldersService } from '../../services/folders.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { unknownErrorAlert } from 'src/app/helpers/alerts';
 import { noConectionAlert } from '../../helpers/alerts';
-import { CreateFolderRequest } from '../../interfaces/folder.interface';
+import {
+  CreateFolderRequest,
+  EditFolderRequest,
+} from '../../interfaces/folder.interface';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,6 +18,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  public viewingTodos: boolean = false;
+  public folderToInspect: Folder;
   private destroy$: Subject<boolean> = new Subject();
   public get user(): User {
     return this.authService.getUser();
@@ -27,27 +32,91 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public editFolder(event: number): void {
-    console.log(event);
+  public async editFolder(folderData: [number, string]): Promise<void> {
+    const [folderID, oldFolderName] = [folderData[0], folderData[1]];
+
+    const inputValue: string = oldFolderName;
+
+    const { value: newFolderName } = await Swal.fire({
+      title: 'Enter the name of the folder',
+      input: 'text',
+      inputLabel: 'Folder name',
+      inputValue: inputValue,
+      showCancelButton: true,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown',
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp',
+      },
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to write something!';
+        }
+      },
+    });
+
+    if (newFolderName) {
+      this.editFolderNameInDatabase(folderID, newFolderName);
+    }
   }
 
-  public viewTasks(event: boolean) {
-    console.log(event);
+  private editFolderNameInDatabase(
+    folderId: number,
+    newFolderName: string
+  ): void {
+    const payload: EditFolderRequest = {
+      name: newFolderName,
+    };
+    this.foldersService
+      .editFolder(folderId, payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          res?.meta?.status === 200 || res?.meta?.status === 201
+            ? this.correctEditedFolder(res?.data?.folder)
+            : unknownErrorAlert();
+        },
+        error: (err) => console.log(err),
+      });
+  }
+
+  private correctEditedFolder(folder: Folder): void {
+    const index: number = this.user.Folders.findIndex(
+      (f) => f.id === folder.id
+    );
+    this.user.Folders[index] = folder;
+  }
+
+  public viewTasks(folderID: number) {
+    this.viewingTodos = true;
+    this.folderToInspect = this.user.Folders.find(
+      (folder) => (folder.id = folderID)
+    );
   }
 
   public deleteFolder(folderId: number) {
-    Swal.fire({
-      title: 'Are you sure you want to delete the folder?',
-
-      showDenyButton: true,
-      confirmButtonText: 'Yes, proceed',
-      denyButtonText: `No!!`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.deleteFolderFromDatabase(folderId);
-      }
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        denyButton: 'btn btn-danger',
+      },
+      buttonsStyling: true,
     });
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Are you sure you want to delete the folder?',
+        text: 'This will delete all the content inside of it',
+        showDenyButton: true,
+        confirmButtonText: 'Yes, proceed',
+        denyButtonText: `No!!`,
+      })
+      .then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.deleteFolderFromDatabase(folderId);
+        }
+      });
   }
 
   private deleteFolderFromDatabase(folderId: number): void {

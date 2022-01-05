@@ -5,12 +5,12 @@
         <div class="input-group mb-3 w100">
           <div class="w-100 d-flex flex-row justify-content-between">
             <i class="bi bi-archive w-25">{{ folder.name }}</i>
-            <i class="bi bi-eye pointer w-25" (click)="userWantsToViewTasks()"
+            <i class="bi bi-eye pointer w-25" (click)="userWantsToViewTasks(folder.id)"
               >View items</i
             >
             <i
               class="bi bi-pencil-square pointer w-25"
-              (click)="userWantsToEditFolder(folder.id)"
+              (click)="userWantsToEditFolder(folder.id, folder.name)"
               >Edit</i
             >
             <i
@@ -44,6 +44,9 @@
       >
         Create
       </button>
+    </div>
+    <div *ngIf="showCreateFolderErrorMsg" class="form-text text-danger">
+      This field is required
     </div>
   </div>
 </div>

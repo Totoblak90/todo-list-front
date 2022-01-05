@@ -9,6 +9,7 @@ export interface Folder {
 }
 
 export type CreateFolderRequest = Pick<Folder, 'users_id' | 'name'>;
+export type EditFolderRequest = Pick<Folder, 'name'>;
 
 export interface CreateFolderResponse {
   meta: Meta;
@@ -22,4 +23,13 @@ export interface CreateFolderResponseData {
 export interface DeleteFolderResponse {
   meta: Meta;
   data: string;
+}
+
+export interface EditFolderResponse {
+  meta: Meta;
+  data: EditFolderResponseData;
+}
+export interface EditFolderResponseData {
+  message: string;
+  folder: Folder;
 }

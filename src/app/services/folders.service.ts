@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { DeleteFolderResponse } from '../interfaces/folder.interface';
+import {
+  DeleteFolderResponse,
+  EditFolderRequest,
+  EditFolderResponse,
+} from '../interfaces/folder.interface';
 import {
   CreateFolderRequest,
   CreateFolderResponse,
@@ -25,7 +29,19 @@ export class FoldersService {
     );
   }
 
+  public editFolder(
+    folderId: number,
+    form: EditFolderRequest
+  ): Observable<EditFolderResponse> {
+    return this.httpClient.put<EditFolderResponse>(
+      `${this._baseUrl}/folders/edit/${folderId}`,
+      form
+    );
+  }
+
   public deleteFolder(id: number): Observable<DeleteFolderResponse> {
-    return this.httpClient.delete<DeleteFolderResponse>(`${this._baseUrl}/folders/delete/${id}`)
+    return this.httpClient.delete<DeleteFolderResponse>(
+      `${this._baseUrl}/folders/delete/${id}`
+    );
   }
 }

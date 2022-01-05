@@ -1,9 +1,21 @@
-<h3>Folders</h3>
-
-<app-folders
-  [user]="user"
-  (onEdit)="editFolder($event)"
-  (onViewMoreItems)="viewTasks($event)"
-  (onCreateFolder)="createNewFolder($event)"
-  (onDeleteFolder)="deleteFolder($event)"
-></app-folders>
+<ng-container *ngIf="!viewingTodos; else todos">
+  <h3>Folders</h3>
+  <ng-container *ngIf="!user.Folders.length; else folders">
+    <app-no-folders
+      [user]="user"
+      (onCreateFolder)="createNewFolder($event)"
+    ></app-no-folders>
+  </ng-container>
+  <ng-template #folders>
+    <app-folders
+      [user]="user"
+      (onEdit)="editFolder($event)"
+      (onViewMoreItems)="viewTasks($event)"
+      (onCreateFolder)="createNewFolder($event)"
+      (onDeleteFolder)="deleteFolder($event)"
+    ></app-folders>
+  </ng-template>
+</ng-container>
+<ng-template #todos>
+  <h3>Folders > {{ folderToInspect.name }}</h3>
+</ng-template>
