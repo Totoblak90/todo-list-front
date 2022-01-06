@@ -303,7 +303,25 @@ export class DashboardComponent implements OnDestroy {
       });
   }
 
+  public editTodoStatusInDatabase(todoData: [number, boolean]): void {
+    const [todoId, status] = [todoData[0], todoData[1]];
+    const form: CreateOrEditTodoReq = {
+      name: this.folderToInspect.Todos?.find((todo) => (todo.id = todoId)).name,
+      completed: status,
+    };
+
+    this.todosService
+      .editTodo(todoId, form)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: EditTodoResponse) =>
+          res?.meta?.status === 200 ? null : unknownErrorAlert(),
+        error: (err) => noConectionAlert(),
+      });
+  }
+
   private correctTodoArray(todo: Todo): void {
+    // Cant make it work
     const index: number = this.user.Todos.findIndex(
       (t: Todo) => t.id === todo.id
     );

@@ -2,9 +2,12 @@
   <div class="card-body">
     <ul class="list-unstyled">
       <li *ngFor="let todo of todos">
-        <div class="input-group mb-3 w100">
+        <div class="input-group mb-3 w100" [class.completed]="todo.completed">
           <div class="w-100 d-flex flex-row justify-content-between">
-            <i class="bi bi-archive w-25">{{ todo.name }}</i>
+            <div>
+              <input type="checkbox" [(ngModel)]="todo.completed" (change)="userWantsToEditTodoStatus(todo.id, todo.completed)">
+              <i class="bi bi-archive w-25 ml-2">{{ todo.name }}</i>
+            </div>
             <i
               class="bi bi-pencil-square pointer w-25"
               (click)="userWantsToEditTodo(todo.id, todo.name)"

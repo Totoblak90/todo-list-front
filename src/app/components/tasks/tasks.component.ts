@@ -15,6 +15,7 @@ export class TasksComponent implements OnInit {
     new EventEmitter();
   @Output() private onDeleteTodo: EventEmitter<number> = new EventEmitter();
   public showCreateTodoErrorMsg: boolean = false;
+  public checkbox: boolean = false;
   constructor() {}
 
   ngOnInit(): void {}
@@ -29,6 +30,10 @@ export class TasksComponent implements OnInit {
 
   public userWantsToEditTodo(id: number, name: string): void {
     this.onEditTodoName.emit([id, name]);
+  }
+
+  public userWantsToEditTodoStatus(id: number, status: boolean): void {
+    this.onEditTodoStatus.emit([id, status]);
   }
 
   public userWantsToDeleteTodo(id: number): void {

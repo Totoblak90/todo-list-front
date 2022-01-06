@@ -31,6 +31,7 @@
         (onCreateTodo)="createNewTask($event)"
         (onDeleteTodo)="deleteTodo($event)"
         (onEditTodoName)="editTodo($event)"
+        (onEditTodoStatus)="editTodoStatusInDatabase($event)"
       ></app-tasks>
     </ng-container>
     <ng-template #noTodos>
