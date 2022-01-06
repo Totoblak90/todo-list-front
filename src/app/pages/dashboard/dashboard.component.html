@@ -13,7 +13,7 @@
     <ng-template #folders>
       <app-folders
         [user]="user"
-        (onEdit)="editFolder($event)"
+        (onEditFolder)="editFolder($event)"
         (onViewMoreItems)="viewTasks($event)"
         (onCreateFolder)="createNewFolder($event)"
         (onDeleteFolder)="deleteFolder($event)"

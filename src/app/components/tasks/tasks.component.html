@@ -5,8 +5,12 @@
         <div class="input-group mb-3 w100" [class.completed]="todo.completed">
           <div class="w-100 d-flex flex-row justify-content-between">
             <div>
-              <input type="checkbox" [(ngModel)]="todo.completed" (change)="userWantsToEditTodoStatus(todo.id, todo.completed)">
-              <i class="bi bi-archive w-25 ml-2">{{ todo.name }}</i>
+              <input
+                type="checkbox"
+                [(ngModel)]="todo.completed"
+                (change)="userWantsToEditTodoStatus(todo.id, todo.completed)"
+              />
+              <i class="bi bi-list-task w-25 ml-2">{{ todo.name }}</i>
             </div>
             <i
               class="bi bi-pencil-square pointer w-25"
@@ -14,7 +18,7 @@
               >Edit</i
             >
             <i
-              class="bi bi-trash text-danger w-25"
+              class="bi bi-trash text-danger w-25 pointer"
               (click)="userWantsToDeleteTodo(todo.id)"
               >Delete</i
             >
