@@ -1,4 +1,6 @@
 import { Meta } from './general.interface';
+import { Todo } from './todos.interface';
+
 export interface Folder {
   id: number;
   name: string;
@@ -6,6 +8,7 @@ export interface Folder {
   updated_at: string;
   deleted_at?: string;
   users_id: number;
+  Todos: Todo[];
 }
 
 export type CreateFolderRequest = Pick<Folder, 'users_id' | 'name'>;

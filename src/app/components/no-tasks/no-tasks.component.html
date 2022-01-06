@@ -1,1 +1,30 @@
-<p>no-tasks works!</p>
+<div class="card">
+  <div class="card-body">
+    <p>Create your first task!</p>
+  </div>
+  <div class="card-footer">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Todo name"
+        aria-label="Todo name"
+        aria-describedby="button-addon2"
+        (keyup.enter)="submitTodoButton.click()"
+        #createTodoInput
+      />
+      <button
+        class="btn btn-outline-success"
+        type="submit"
+        id="button-addon2"
+        (click)="userWantsToCreateTask(createTodoInput.value)"
+        #submitTodoButton
+      >
+        Create
+      </button>
+    </div>
+    <div *ngIf="showCreateTodoErrorMsg" class="form-text text-danger">
+      Name must exist and have at least 3 characters.
+    </div>
+  </div>
+</div>

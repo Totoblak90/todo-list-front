@@ -1,3 +1,6 @@
+<!-- --------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------             FOLDERS              -------------------------------- -->
+<!-- --------------------------------------------------------------------------------------------- -->
 <ng-container *ngIf="!viewingTodos; else todos">
   <h3>Folders</h3>
   <ng-container *ngIf="!user.Folders.length; else folders">
@@ -16,6 +19,26 @@
     ></app-folders>
   </ng-template>
 </ng-container>
+<!-- --------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------             TODOS                -------------------------------- -->
+<!-- --------------------------------------------------------------------------------------------- -->
 <ng-template #todos>
   <h3>Folders > {{ folderToInspect.name }}</h3>
+  <ng-container *ngIf="folderToInspect.Todos?.length > 0; else noTodos">
+    <app-tasks
+      [todos]="folderToInspect.Todos"
+      (onCreateTodo)="createNewTask($event)"
+      (onDeleteTodo)="deleteTodo($event)"
+      (onEditTodoName)="editTodo($event)"
+    ></app-tasks>
+  </ng-container>
+  <ng-template #noTodos>
+    <app-no-tasks
+      [user]="user"
+      (onCreateTodo)="createNewTask($event)"
+    ></app-no-tasks>
+  </ng-template>
+  <div class="text-center">
+    <button class="btn btn-primary" (click)="showFolders()">Go back</button>
+  </div>
 </ng-template>

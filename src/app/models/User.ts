@@ -1,4 +1,5 @@
 import { Folder } from '../interfaces/folder.interface';
+import { Todo } from '../interfaces/todos.interface';
 
 export class User {
   constructor(
@@ -7,6 +8,6 @@ export class User {
     public created_at: string,
     public updated_at: string,
     public Folders: Folder[],
-    public Todos: any[]
+    public Todos: Todo[]
   ) {}
 }

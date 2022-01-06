@@ -18,7 +18,7 @@ export class NoFoldersComponent implements OnInit {
   public userWantsToCreateFolder(folderName) {
     this.showCreateFolderErrorMsg = false;
 
-    folderName
+    folderName && folderName.length >= 3
       ? this.onCreateFolder.emit(folderName)
       : (this.showCreateFolderErrorMsg = true);
   }

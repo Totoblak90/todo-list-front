@@ -7,9 +7,9 @@ import { User } from 'src/app/models/User';
   styleUrls: ['./folders.component.scss'],
 })
 export class FoldersComponent implements OnInit {
-  @Output() private onEdit: EventEmitter<[number, string]> = new EventEmitter();
   @Output() private onViewMoreItems: EventEmitter<number> = new EventEmitter();
   @Output() private onCreateFolder: EventEmitter<string> = new EventEmitter();
+  @Output() private onEditFolder: EventEmitter<[number, string]> = new EventEmitter();
   @Output() private onDeleteFolder: EventEmitter<number> = new EventEmitter();
   @Input() public user: User;
 
@@ -20,7 +20,7 @@ export class FoldersComponent implements OnInit {
   ngOnInit(): void {}
 
   public userWantsToEditFolder(id: number, folderName: string): void {
-    this.onEdit.emit([id, folderName]);
+    this.onEditFolder.emit([id, folderName]);
   }
 
   public userWantsToViewTasks(folderId: number): void {
@@ -30,7 +30,7 @@ export class FoldersComponent implements OnInit {
   public userWantsToCreateFolder(name: string): void {
     this.showCreateFolderErrorMsg = false;
 
-    name
+    name && name.length >= 3
       ? this.onCreateFolder.emit(name)
       : (this.showCreateFolderErrorMsg = true);
   }
