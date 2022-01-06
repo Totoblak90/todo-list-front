@@ -1,44 +1,46 @@
 <!-- --------------------------------------------------------------------------------------------- -->
 <!-- ---------------------------             FOLDERS              -------------------------------- -->
 <!-- --------------------------------------------------------------------------------------------- -->
-<ng-container *ngIf="!viewingTodos; else todos">
-  <h3>Folders</h3>
-  <ng-container *ngIf="!user.Folders.length; else folders">
-    <app-no-folders
-      [user]="user"
-      (onCreateFolder)="createNewFolder($event)"
-    ></app-no-folders>
+<div class="animate__animated animate__fadeIn animate__faster">
+  <ng-container *ngIf="!viewingTodos; else todos">
+    <h3>Folders</h3>
+    <ng-container *ngIf="!user.Folders.length; else folders">
+      <app-no-folders
+        [user]="user"
+        (onCreateFolder)="createNewFolder($event)"
+      ></app-no-folders>
+    </ng-container>
+    <ng-template #folders>
+      <app-folders
+        [user]="user"
+        (onEdit)="editFolder($event)"
+        (onViewMoreItems)="viewTasks($event)"
+        (onCreateFolder)="createNewFolder($event)"
+        (onDeleteFolder)="deleteFolder($event)"
+      ></app-folders>
+    </ng-template>
   </ng-container>
-  <ng-template #folders>
-    <app-folders
-      [user]="user"
-      (onEdit)="editFolder($event)"
-      (onViewMoreItems)="viewTasks($event)"
-      (onCreateFolder)="createNewFolder($event)"
-      (onDeleteFolder)="deleteFolder($event)"
-    ></app-folders>
+  <!-- --------------------------------------------------------------------------------------------- -->
+  <!-- ---------------------------             TODOS                -------------------------------- -->
+  <!-- --------------------------------------------------------------------------------------------- -->
+  <ng-template #todos>
+    <h3>Folders > {{ folderToInspect.name }}</h3>
+    <ng-container *ngIf="folderToInspect.Todos?.length > 0; else noTodos">
+      <app-tasks
+        [todos]="folderToInspect.Todos"
+        (onCreateTodo)="createNewTask($event)"
+        (onDeleteTodo)="deleteTodo($event)"
+        (onEditTodoName)="editTodo($event)"
+      ></app-tasks>
+    </ng-container>
+    <ng-template #noTodos>
+      <app-no-tasks
+        [user]="user"
+        (onCreateTodo)="createNewTask($event)"
+      ></app-no-tasks>
+    </ng-template>
+    <div class="text-center">
+      <button class="btn btn-primary" (click)="showFolders()">Go back</button>
+    </div>
   </ng-template>
-</ng-container>
-<!-- --------------------------------------------------------------------------------------------- -->
-<!-- ---------------------------             TODOS                -------------------------------- -->
-<!-- --------------------------------------------------------------------------------------------- -->
-<ng-template #todos>
-  <h3>Folders > {{ folderToInspect.name }}</h3>
-  <ng-container *ngIf="folderToInspect.Todos?.length > 0; else noTodos">
-    <app-tasks
-      [todos]="folderToInspect.Todos"
-      (onCreateTodo)="createNewTask($event)"
-      (onDeleteTodo)="deleteTodo($event)"
-      (onEditTodoName)="editTodo($event)"
-    ></app-tasks>
-  </ng-container>
-  <ng-template #noTodos>
-    <app-no-tasks
-      [user]="user"
-      (onCreateTodo)="createNewTask($event)"
-    ></app-no-tasks>
-  </ng-template>
-  <div class="text-center">
-    <button class="btn btn-primary" (click)="showFolders()">Go back</button>
-  </div>
-</ng-template>
+</div>

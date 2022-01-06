@@ -150,7 +150,13 @@ export class DashboardComponent implements OnDestroy {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          this.deleteFolderFromDatabase(folderId);
+          const folder: Folder = this.user.Folders.find(
+            (f) => f.id === folderId
+          );
+
+          folder.Todos.length
+            ? this.deleteFolderAndTasksFromDatabase(folderId)
+            : this.deleteFolderFromDatabase(folderId);
         }
       });
   }
@@ -158,6 +164,20 @@ export class DashboardComponent implements OnDestroy {
   private deleteFolderFromDatabase(folderId: number): void {
     this.foldersService
       .deleteFolder(folderId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          res?.meta?.status === 200
+            ? this.rearrangeFolderArray(folderId)
+            : unknownErrorAlert();
+        },
+        error: () => noConectionAlert(),
+      });
+  }
+
+  private deleteFolderAndTasksFromDatabase(folderId: number): void {
+    this.foldersService
+      .deleteFolderWithTasks(folderId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {

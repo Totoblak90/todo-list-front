@@ -44,4 +44,10 @@ export class FoldersService {
       `${this._baseUrl}/folders/delete/${id}`
     );
   }
+
+  public deleteFolderWithTasks(id: number): Observable<DeleteFolderResponse> {
+    return this.httpClient.delete<DeleteFolderResponse>(
+      `${this._baseUrl}/folders/delete-with-tasks/${id}`
+    );
+  }
 }
